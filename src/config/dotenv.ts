@@ -11,6 +11,10 @@ const envVariables = [
   "BETTER_AUTH_SECRET",
   "BETTER_AUTH_URL",
   "FRONTEND_URL",
+  "EMAIL_HOST",
+  "EMAIL_PORT",
+  "EMAIL_USER",
+  "EMAIL_PASS",
 ] as const;
 
 type Env = Record<(typeof envVariables)[number], string>;
