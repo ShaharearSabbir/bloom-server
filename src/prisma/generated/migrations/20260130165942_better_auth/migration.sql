@@ -6,18 +6,18 @@ CREATE TYPE "UserStatus" AS ENUM ('ACTIVE', 'INACTIVE');
 
 -- CreateTable
 CREATE TABLE "user" (
-    "userId" TEXT NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "role" "UserRole" NOT NULL,
-    "status" "UserStatus" NOT NULL,
+    "status" "UserStatus" NOT NULL DEFAULT 'ACTIVE',
     "emailVerified" BOOLEAN NOT NULL DEFAULT false,
     "image" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "user_pkey" PRIMARY KEY ("userId")
+    CONSTRAINT "user_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -81,7 +81,7 @@ CREATE INDEX "account_userId_idx" ON "account"("userId");
 CREATE INDEX "verification_identifier_idx" ON "verification"("identifier");
 
 -- AddForeignKey
-ALTER TABLE "session" ADD CONSTRAINT "session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "session" ADD CONSTRAINT "session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "account" ADD CONSTRAINT "account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "account" ADD CONSTRAINT "account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;

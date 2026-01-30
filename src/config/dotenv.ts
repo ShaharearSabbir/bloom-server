@@ -10,6 +10,7 @@ const envVariables = [
   "DATABASE_URL",
   "BETTER_AUTH_SECRET",
   "BETTER_AUTH_URL",
+  "FRONTEND_URL",
 ] as const;
 
 type Env = Record<(typeof envVariables)[number], string>;
