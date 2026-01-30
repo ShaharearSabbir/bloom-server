@@ -3,7 +3,14 @@ import path from "path";
 
 dotenv.config({ path: path.join(process.cwd(), ".env") });
 
-const envVariables = ["APP_NAME", "VERSION", "PORT", "DATABASE_URL"] as const;
+const envVariables = [
+  "APP_NAME",
+  "VERSION",
+  "PORT",
+  "DATABASE_URL",
+  "BETTER_AUTH_SECRET",
+  "BETTER_AUTH_URL",
+] as const;
 
 type Env = Record<(typeof envVariables)[number], string>;
 
@@ -15,4 +22,3 @@ envVariables.forEach((environment) => {
   }
   env[environment] = process.env[environment];
 });
-
