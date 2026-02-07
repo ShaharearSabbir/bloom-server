@@ -12,8 +12,8 @@ const sendRes = (
   statusCode: number,
   success: boolean,
   message: string,
-  data?: Record<string, any>,
-  errorDetails?: Record<string, any>
+  data?: Record<string, any> | null,
+  errorDetails?: Record<string, any>,
 ) => {
   const resJson: ResJson = {
     success,
@@ -24,7 +24,7 @@ const sendRes = (
     resJson.data = data;
   }
 
-  if(errorDetails) {
+  if (errorDetails) {
     resJson.errorDetails = errorDetails;
   }
 
