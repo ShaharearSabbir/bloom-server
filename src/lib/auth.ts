@@ -6,7 +6,7 @@ import { generateVerificationEmail } from "../utils/generateVerificationEmail";
 import sendEmail from "../utils/sendEmail";
 import { getOAuthState } from "better-auth/api";
 
-const auth = betterAuth({
+export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
@@ -77,7 +77,3 @@ const auth = betterAuth({
     },
   },
 });
-
-export default auth;
-
-type Session = typeof auth.$Infer.Session;
