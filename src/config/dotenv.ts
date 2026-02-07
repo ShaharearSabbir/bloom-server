@@ -15,6 +15,8 @@ const envVariables = [
   "EMAIL_PORT",
   "EMAIL_USER",
   "EMAIL_PASS",
+  "GOOGLE_CLIENT_ID",
+  "GOOGLE_CLIENT_SECRET",
 ] as const;
 
 type Env = Record<(typeof envVariables)[number], string>;

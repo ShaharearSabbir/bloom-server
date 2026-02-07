@@ -1,0 +1,6 @@
+model Category {
+    categoryId String  @id @unique
+    name       String  @unique
+    tutors     Tutor[]
+    slug       String
+}

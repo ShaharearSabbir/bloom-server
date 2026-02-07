@@ -1,0 +1,10 @@
+model Tutor {
+    tutorId    String   @unique @default(uuid())
+    userId     String   @unique
+    user       User     @relation(fields: [userId], references: [id])
+    categoryId String   @unique
+    category   Category @relation(fields: [categoryId], references: [categoryId])
+    bio        String
+    hourlyRate Float
+    profession String
+}
