@@ -1,5 +1,5 @@
 model Category {
-    categoryId String  @id @unique
+    categoryId String  @unique @default(uuid())
     name       String  @unique
     tutors     Tutor[]
     slug       String

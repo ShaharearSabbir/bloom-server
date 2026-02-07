@@ -1,7 +1,7 @@
 import { User } from "better-auth/types";
 import prisma from "../lib/prisma";
 import { UserRole } from "../prisma/generated/prisma/enums";
-import auth from "../lib/auth";
+import { auth } from "../lib/auth";
 
 const seedAdmin = async () => {
   try {
@@ -31,6 +31,9 @@ const seedAdmin = async () => {
     });
 
     console.log("admin created");
+    console.log("Please login...");
+    console.log({ email: userData.email });
+    console.log({ password: adminData.body.password });
   } catch (error) {
     console.error(error);
   }

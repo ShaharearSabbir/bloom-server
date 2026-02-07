@@ -62,7 +62,7 @@ export const auth = betterAuth({
       create: {
         before: async (user) => {
           const state = await getOAuthState();
-          const roleFromSocial = state?.query?.role;
+          const roleFromSocial = state?.role;
 
           return {
             data: {
