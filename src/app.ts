@@ -1,10 +1,12 @@
-import express, { application } from "express";
+import express, { Application } from "express";
 import { env } from "./config";
 import { toNodeHandler } from "better-auth/node";
 import { auth } from "./lib/auth";
 import cors from "cors";
+import { tutorRoutes } from "./modules/tutor/tutor.routes";
+import { categoryRoutes } from "./modules/category/category.routes";
 
-const app = express();
+const app: Application = express();
 
 app.use(express.json());
 
@@ -20,5 +22,9 @@ app.get("/", (req, res) => {
 });
 
 app.all("/api/auth/*splat", toNodeHandler(auth));
+
+app.use("/api/tutors", tutorRoutes);
+
+app.use("/api/categories", categoryRoutes);
 
 export default app;
