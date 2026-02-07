@@ -6,11 +6,22 @@ const createTutor = async (payload: TutorCreateInput) => {
   return tutor;
 };
 
-const getTutor = async (tutorId: string) => {
-  const tutor = await prisma.tutor.findUnique({ where: { tutorId } });
+const updateTutor = async (userId: string, payload: TutorCreateInput) => {
+  const tutor = await prisma.tutor.update({
+    where: { userId },
+    data: payload,
+  });
   return tutor;
 };
 
-const tutorService = { createTutor, getTutor };
+const getTutor = async (userId: string) => {
+  const tutor = await prisma.tutor.findUniqueOrThrow({
+    where: { userId },
+  });
+
+  return tutor;
+};
+
+const tutorService = { createTutor, getTutor, updateTutor };
 
 export default tutorService;

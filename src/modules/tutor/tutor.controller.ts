@@ -16,9 +16,22 @@ const createTutor = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const updateTutor = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user?.id;
+    const result = await tutorService.updateTutor(userId as string, req.body);
+    return sendRes(res, 200, true, "Tutor updated successfully", result);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getMyTutor = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id;
+
+    console.log(userId);
+
     const result = await tutorService.getTutor(userId as string);
     return sendRes(res, 200, true, "Tutor fetched successfully", result);
   } catch (error) {
@@ -26,6 +39,6 @@ const getMyTutor = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const tutorController = { createTutor, getMyTutor };
+const tutorController = { createTutor, getMyTutor, updateTutor };
 
 export default tutorController;
