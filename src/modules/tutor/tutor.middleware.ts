@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import * as z from "zod";
-import sendRes from "../../utils/sendRes";
+import validate from "../../middleware/validate";
 
 const tutorBaseSchema = z.object({
   categoryId: z.string().trim().min(1, "Category ID is required"),
@@ -16,26 +16,6 @@ export const tutorUpdateValidInputs = tutorBaseSchema
   .refine((data) => Object.keys(data).length > 0, {
     message: "At least one field must be provided for an update",
   });
-
-const validate =
-  (schema: z.ZodSchema) =>
-  (req: Request, res: Response, next: NextFunction) => {
-    const validated = schema.safeParse(req.body);
-
-    if (!validated.success) {
-      return sendRes(
-        res,
-        400,
-        false,
-        "Validation Error",
-        null,
-        validated.error.format(),
-      );
-    }
-
-    req.body = validated.data;
-    next();
-  };
 
 const tutorMiddleware = {
   validateCreateInputs: validate(tutorCreateValidInputs),

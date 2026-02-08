@@ -30,8 +30,6 @@ const getMyTutor = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id;
 
-    console.log(userId);
-
     const result = await tutorService.getTutor(userId as string);
     return sendRes(res, 200, true, "Tutor fetched successfully", result);
   } catch (error) {

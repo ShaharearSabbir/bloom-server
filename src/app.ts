@@ -5,6 +5,7 @@ import { auth } from "./lib/auth";
 import cors from "cors";
 import { tutorRoutes } from "./modules/tutor/tutor.routes";
 import { categoryRoutes } from "./modules/category/category.routes";
+import availabilityRoutes from "./modules/availability/availability.routes";
 
 const app: Application = express();
 
@@ -26,5 +27,7 @@ app.all("/api/auth/*splat", toNodeHandler(auth));
 app.use("/api/tutors", tutorRoutes);
 
 app.use("/api/categories", categoryRoutes);
+
+app.use("/api/availabilities", availabilityRoutes);
 
 export default app;
