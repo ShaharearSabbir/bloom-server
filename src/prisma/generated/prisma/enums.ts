@@ -9,6 +9,14 @@
 * 🟢 You can import this file directly.
 */
 
+export const CommentStatus = {
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type CommentStatus = (typeof CommentStatus)[keyof typeof CommentStatus]
+
+
 export const UserRole = {
   ADMIN: 'ADMIN',
   TUTOR: 'TUTOR',

@@ -1,11 +1,13 @@
 model Tutor {
-    tutorId      String         @unique @default(uuid())
-    userId       String         @unique
+    userId       String         @id @unique
     user         User           @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
     categoryId   String         @unique
     category     Category       @relation(fields: [categoryId], references: [categoryId], onDelete: Cascade, onUpdate: Cascade)
     bio          String
     hourlyRate   Float
     profession   String
+    avgRating    Float          @default(0)
+    reviewCount  Int            @default(0)
     Availability Availability[]
+    reviews      Review[]
 }

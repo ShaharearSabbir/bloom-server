@@ -28,6 +28,11 @@ export type Availability = Prisma.AvailabilityModel
  */
 export type Category = Prisma.CategoryModel
 /**
+ * Model Review
+ * 
+ */
+export type Review = Prisma.ReviewModel
+/**
  * Model Tutor
  * 
  */

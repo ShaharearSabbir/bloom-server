@@ -22,28 +22,41 @@ const getTutor = async (userId: string) => {
   return tutor;
 };
 
-const getTutors = async () => {
-  const result = await prisma.tutor.findMany({
-    include: {
-      user: true,
-      category: true,
+export const getTutors = async () => {
+  const tutors = await prisma.tutor.findMany({
+    select: {
+      userId: true, // This is your primary key now
+      bio: true,
+      hourlyRate: true,
+      avgRating: true,
+      reviewCount: true,
+      user: {
+        select: { name: true, image: true, emailVerified: true },
+      },
+      category: {
+        select: { name: true },
+      },
+    },
+    orderBy: {
+      avgRating: "desc",
     },
   });
-  const tutors = result.map((tutor) => ({
-    id: tutor.userId,
-    name: tutor.user.name,
-    bio: tutor.bio,
-    avatarUrl: tutor.user.image,
-    category: tutor.category.name,
-    hourlyRate: tutor.hourlyRate,
-    // rating: tutor.rating | 0,
-    // totalReviews: tutor.totalReviews | 0,
-    isVerified: tutor.user.emailVerified,
-  }));
 
-  return tutors;
+  return tutors.map((t) => ({
+    id: t.userId, // Identical to userId
+    name: t.user.name,
+    bio: t.bio,
+    image: t.user.image,
+    category: t.category?.name || "Uncategorized",
+    hourlyRate: t.hourlyRate,
+    rating: Number(t.avgRating.toFixed(1)),
+    totalReviews: t.reviewCount,
+    isVerified: !!t.user.emailVerified,
+  }));
 };
 
 const tutorService = { createTutor, getTutor, updateTutor, getTutors };
 
 export default tutorService;
+
+getTutors();
