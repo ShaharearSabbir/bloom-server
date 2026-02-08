@@ -26,4 +26,6 @@ router.get(
   tutorController.getMyTutor,
 );
 
+router.get("/", tutorController.getTutors);
+
 export const tutorRoutes = router;

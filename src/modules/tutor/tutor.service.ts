@@ -22,6 +22,28 @@ const getTutor = async (userId: string) => {
   return tutor;
 };
 
-const tutorService = { createTutor, getTutor, updateTutor };
+const getTutors = async () => {
+  const result = await prisma.tutor.findMany({
+    include: {
+      user: true,
+      category: true,
+    },
+  });
+  const tutors = result.map((tutor) => ({
+    id: tutor.userId,
+    name: tutor.user.name,
+    bio: tutor.bio,
+    avatarUrl: tutor.user.image,
+    category: tutor.category.name,
+    hourlyRate: tutor.hourlyRate,
+    // rating: tutor.rating | 0,
+    // totalReviews: tutor.totalReviews | 0,
+    isVerified: tutor.user.emailVerified,
+  }));
+
+  return tutors;
+};
+
+const tutorService = { createTutor, getTutor, updateTutor, getTutors };
 
 export default tutorService;

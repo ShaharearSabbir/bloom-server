@@ -37,6 +37,15 @@ const getMyTutor = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const tutorController = { createTutor, getMyTutor, updateTutor };
+const getTutors = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const result = await tutorService.getTutors();
+    return sendRes(res, 200, true, "Tutors fetched successfully", result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const tutorController = { createTutor, getMyTutor, updateTutor, getTutors };
 
 export default tutorController;
