@@ -17,13 +17,13 @@ const createTutorAvailabilities = async (
     const sortedAvailabilities =
       await availabilityService.createTutorAvailabilities(req.body, tutorId);
 
-    return sendRes(
+    return sendRes({
       res,
-      201,
-      true,
-      "Schedule synchronized successfully",
-      sortedAvailabilities,
-    );
+      statusCode: 201,
+      success: true,
+      message: "Tutor availabilities created successfully",
+      data: sortedAvailabilities,
+    });
   } catch (error) {
     next(error);
   }
@@ -37,13 +37,13 @@ const getTutorAvailabilities = async (
   try {
     const tutorId = req.user?.id as string;
     const result = await availabilityService.getTutorAvailabilities(tutorId);
-    return sendRes(
+    return sendRes({
       res,
-      200,
-      true,
-      "Tutor availabilities fetched successfully",
-      result,
-    );
+      statusCode: 200,
+      success: true,
+      message: "Tutor availabilities fetched successfully",
+      data: result,
+    });
   } catch (error) {
     next(error);
   }

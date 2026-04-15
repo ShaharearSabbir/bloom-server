@@ -1,34 +1,30 @@
 import { Response } from "express";
 
-interface ResJson {
+interface SendResOptions<T> {
+  res: Response;
+  statusCode: number;
   success: boolean;
   message: string;
-  data?: Record<string, any>;
-  errorDetails?: Record<string, any>;
+  data?: T | null;
+  meta?: {
+    total: number;
+    page: number;
+    totalPages: number;
+    limit: number;
+  };
+  error?: Record<string, any>;
 }
 
-const sendRes = (
-  res: Response,
-  statusCode: number,
-  success: boolean,
-  message: string,
-  data?: Record<string, any> | null,
-  errorDetails?: Record<string, any>,
-) => {
-  const resJson: ResJson = {
+const sendRes = <T>(options: SendResOptions<T>) => {
+  const { res, statusCode, success, message, data, meta, error } = options;
+
+  res.status(statusCode).json({
     success,
     message,
-  };
-
-  if (data) {
-    resJson.data = data;
-  }
-
-  if (errorDetails) {
-    resJson.errorDetails = errorDetails;
-  }
-
-  res.status(statusCode).json(resJson);
+    data: data,
+    meta: meta,
+    error: error,
+  });
 };
 
 export default sendRes;

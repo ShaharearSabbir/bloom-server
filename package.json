@@ -7,6 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npx tsx dist/server.ts",
     "seed:admin": "npx tsx src/scripts/seedAdmin.ts",
+    "seed:tutor": "npx tsx src/scripts/seedTutor.ts",
+    "seed:student": "npx tsx src/scripts/seedStudent.ts",
     "dev": "npx tsx watch src/server.ts",
     "build": "npx tsc"
   },
@@ -22,7 +24,8 @@
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "nodemailer": "^7.0.13",
-    "pg": "^8.17.2"
+    "pg": "^8.17.2",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",

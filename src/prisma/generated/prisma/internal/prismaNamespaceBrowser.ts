@@ -120,7 +120,9 @@ export const TutorScalarFieldEnum = {
   hourlyRate: 'hourlyRate',
   profession: 'profession',
   avgRating: 'avgRating',
-  reviewCount: 'reviewCount'
+  reviewCount: 'reviewCount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type TutorScalarFieldEnum = (typeof TutorScalarFieldEnum)[keyof typeof TutorScalarFieldEnum]

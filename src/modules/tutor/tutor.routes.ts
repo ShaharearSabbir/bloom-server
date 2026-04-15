@@ -28,4 +28,8 @@ router.get(
 
 router.get("/", tutorController.getTutors);
 
+router.get("/:id", tutorController.getTutorById);
+
+router.get("/filter", tutorController.filterData);
+
 export const tutorRoutes = router;

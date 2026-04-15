@@ -12,7 +12,13 @@ const createCategory = async (
 
     const result = await categoryService.createCategory(newCategory);
 
-    return sendRes(res, 201, true, "Category created successfully", result);
+    return sendRes({
+      res,
+      statusCode: 201,
+      success: true,
+      message: "Category created successfully",
+      data: result,
+    });
   } catch (error) {
     next(error);
   }
@@ -24,9 +30,14 @@ const getCategories = async (
   next: NextFunction,
 ) => {
   try {
-    const userId = req.user?.id;
     const result = await categoryService.getCategories();
-    return sendRes(res, 200, true, "Category fetched successfully", result);
+    return sendRes({
+      res,
+      statusCode: 200,
+      success: true,
+      message: "Categories fetched successfully",
+      data: result,
+    });
   } catch (error) {
     next(error);
   }
