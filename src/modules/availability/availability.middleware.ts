@@ -1,5 +1,5 @@
 import { z } from "zod";
-import validate from "../../middleware/validate";
+import validateRequest from "../../middleware/validateRequest";
 
 export const availabilityBaseSchema = z
   .object({
@@ -33,8 +33,8 @@ export const availabilityArraySchema = z
   .min(1, "At least one availability slot is required");
 
 const availabilityMiddleware = {
-  validateBulkSlots: validate(availabilityArraySchema),
-  validateSingleSlot: validate(availabilityBaseSchema),
+  validateBulkSlots: validateRequest(availabilityArraySchema),
+  validateSingleSlot: validateRequest(availabilityBaseSchema),
 };
 
 export default availabilityMiddleware;

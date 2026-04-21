@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import * as z from "zod";
-import validate from "../../middleware/validate";
+import validateRequest from "../../middleware/validateRequest";
 
 const tutorBaseSchema = z.object({
   categoryId: z.string().trim().min(1, "Category ID is required"),
@@ -18,8 +18,8 @@ export const tutorUpdateValidInputs = tutorBaseSchema
   });
 
 const tutorMiddleware = {
-  validateCreateInputs: validate(tutorCreateValidInputs),
-  validateUpdateInputs: validate(tutorUpdateValidInputs),
+  validateCreateInputs: validateRequest(tutorCreateValidInputs),
+  validateUpdateInputs: validateRequest(tutorUpdateValidInputs),
 };
 
 export default tutorMiddleware;

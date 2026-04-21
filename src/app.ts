@@ -6,6 +6,7 @@ import cors from "cors";
 import { tutorRoutes } from "./modules/tutor/tutor.routes";
 import { categoryRoutes } from "./modules/category/category.routes";
 import availabilityRoutes from "./modules/availability/availability.routes";
+import { bookingRoute } from "./modules/bookings/booking.route";
 
 const app: Application = express();
 
@@ -29,5 +30,7 @@ app.use("/api/tutors", tutorRoutes);
 app.use("/api/categories", categoryRoutes);
 
 app.use("/api/availabilities", availabilityRoutes);
+
+app.use("/api/bookings", bookingRoute);
 
 export default app;

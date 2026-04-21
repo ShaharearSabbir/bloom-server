@@ -26,11 +26,26 @@ const getTutor = async (userId: string) => {
       hourlyRate: true,
       avgRating: true,
       reviewCount: true,
+      bookings: {
+        where: {
+          bookingDate: {
+            gte: new Date(),
+          },
+        },
+        select: {
+          bookingDate: true,
+          endTime: true,
+          startTime: true,
+        },
+      },
+      availability: {
+        select: { dayOfWeek: true, startTime: true, endTime: true },
+      },
       user: {
         select: { name: true, image: true, emailVerified: true },
       },
       category: {
-        select: { name: true },
+        select: { name: true, categoryId: true },
       },
     },
   });
@@ -41,10 +56,13 @@ const getTutor = async (userId: string) => {
     bio: tutorData.bio,
     image: tutorData.user.image,
     category: tutorData.category?.name || "Uncategorized",
+    categoryId: tutorData.category.categoryId,
     hourlyRate: tutorData.hourlyRate,
     rating: Number(tutorData.avgRating.toFixed(1)),
     totalReviews: tutorData.reviewCount,
     isVerified: !!tutorData.user.emailVerified,
+    availability: tutorData.availability,
+    upcomingBookings: tutorData.bookings,
   };
 
   return tutor;
@@ -109,11 +127,26 @@ const getTutors = async (query: TutorQueryParams) => {
           hourlyRate: true,
           avgRating: true,
           reviewCount: true,
+          bookings: {
+            where: {
+              bookingDate: {
+                gte: new Date(),
+              },
+            },
+            select: {
+              bookingDate: true,
+              endTime: true,
+              startTime: true,
+            },
+          },
+          availability: {
+            select: { dayOfWeek: true, startTime: true, endTime: true },
+          },
           user: {
             select: { name: true, image: true, emailVerified: true },
           },
           category: {
-            select: { name: true },
+            select: { name: true, categoryId: true },
           },
         },
         orderBy: orderByCondition,
@@ -137,10 +170,13 @@ const getTutors = async (query: TutorQueryParams) => {
     bio: t.bio,
     image: t.user.image,
     category: t.category?.name || "Uncategorized",
+    categoryId: t.category.categoryId,
     hourlyRate: t.hourlyRate,
     rating: Number(t.avgRating.toFixed(1)),
     totalReviews: t.reviewCount,
     isVerified: !!t.user.emailVerified,
+    availability: t.availability,
+    upcomingBookings: t.bookings,
   }));
 
   console.log({ tutors });

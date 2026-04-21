@@ -2,5 +2,6 @@ model Category {
     categoryId String  @unique @default(uuid())
     name       String  @unique
     tutors     Tutor[]
+    bookings  Booking[]
     slug       String
 }

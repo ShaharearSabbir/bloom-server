@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import * as z from "zod";
-import validate from "../../middleware/validate";
+import validateRequest from "../../middleware/validateRequest";
 
 const CategoryBaseSchema = z.object({
   name: z.string().trim().min(1, "Category name is required"),
@@ -17,8 +17,8 @@ export const CategoryUpdateValidInputs = CategoryBaseSchema.partial().refine(
 );
 
 const CategoryMiddleware = {
-  validateCreateInputs: validate(CategoryCreateValidInputs),
-  validateUpdateInputs: validate(CategoryUpdateValidInputs),
+  validateCreateInputs: validateRequest(CategoryCreateValidInputs),
+  validateUpdateInputs: validateRequest(CategoryUpdateValidInputs),
 };
 
 export default CategoryMiddleware;

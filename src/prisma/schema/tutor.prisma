@@ -8,8 +8,10 @@ model Tutor {
     profession   String
     avgRating    Float          @default(0)
     reviewCount  Int            @default(0)
-    Availability Availability[]
+    availability Availability[]
     reviews      Review[]
+    bookings     Booking[]
+
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

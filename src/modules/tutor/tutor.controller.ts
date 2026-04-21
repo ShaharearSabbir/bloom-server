@@ -94,7 +94,7 @@ const getTutorById = async (
   res: Response,
   next: NextFunction,
 ) => {
-try {
+  try {
     const tutorId = req.params.id;
 
     const result = await tutorService.getTutor(tutorId as string);
@@ -115,9 +115,9 @@ try {
       message: "Tutor fetched successfully",
       data: result,
     });
-} catch (error) {
-  next(error);
-}
+  } catch (error) {
+    next(error);
+  }
 };
 
 const filterData = async (req: Request, res: Response, next: NextFunction) => {

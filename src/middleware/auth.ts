@@ -12,21 +12,41 @@ const auth = (...roles: UserRole[]) => {
       });
 
       if (!session) {
-        return sendRes(res, 401, false, "unauthorized access");
+        return sendRes({
+          res,
+          statusCode: 401,
+          success: false,
+          message: "authentication required",
+        });
       }
 
       if (!session?.user.emailVerified) {
-        return sendRes(res, 403, false, "email verified required");
+        return sendRes({
+          res,
+          statusCode: 403,
+          success: false,
+          message: "email verification required",
+        });
       }
 
       if (session?.user.status !== "ACTIVE") {
-        return sendRes(res, 403, false, "account activation required");
+        return sendRes({
+          res,
+          statusCode: 403,
+          success: false,
+          message: "account activation required",
+        });
       }
 
       const currentUserRole = session?.user.role as UserRole;
 
       if (roles && roles.length > 0 && !roles.includes(currentUserRole)) {
-        return sendRes(res, 401, false, "unauthorized access");
+        return sendRes({
+          res,
+          statusCode: 401,
+          success: false,
+          message: "unauthorized access",
+        });
       }
 
       req.user = session?.user as User;
