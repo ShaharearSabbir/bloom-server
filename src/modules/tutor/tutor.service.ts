@@ -4,7 +4,6 @@ import { TutorCreateInput } from "../../prisma/generated/prisma/models";
 import { TutorQueryParams } from "./tutor.validation";
 
 const createTutor = async (payload: TutorCreateInput) => {
-  console.log(payload);
   const tutor = await prisma.tutor.create({ data: payload });
   return tutor;
 };
@@ -26,6 +25,15 @@ const getTutor = async (userId: string) => {
       hourlyRate: true,
       avgRating: true,
       reviewCount: true,
+      reviews: {
+        include: {
+          student: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
       bookings: {
         where: {
           bookingDate: {
@@ -60,6 +68,7 @@ const getTutor = async (userId: string) => {
     hourlyRate: tutorData.hourlyRate,
     rating: Number(tutorData.avgRating.toFixed(1)),
     totalReviews: tutorData.reviewCount,
+    reviews: tutorData.reviews,
     isVerified: !!tutorData.user.emailVerified,
     availability: tutorData.availability,
     upcomingBookings: tutorData.bookings,
@@ -178,8 +187,6 @@ const getTutors = async (query: TutorQueryParams) => {
     availability: t.availability,
     upcomingBookings: t.bookings,
   }));
-
-  console.log({ tutors });
 
   return {
     tutors,

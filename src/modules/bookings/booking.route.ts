@@ -11,12 +11,12 @@ route.post(
   "/",
   auth(),
   validateRequest(createBookingsZodSchema),
-  checkHit,
   bookingController.createBookings,
 );
 
-route.get("/my-bookings", auth(), checkHit, bookingController.userBookings);
+route.get("/my-bookings", auth(), bookingController.userBookings);
 
 route.patch("/:id/status", auth(), bookingController.updateBookingStatus);
+route.post("/:id/join-session", auth(), bookingController.joinSession);
 
 export const bookingRoute = route;

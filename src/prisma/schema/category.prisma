@@ -1,7 +1,9 @@
 model Category {
-    categoryId String  @unique @default(uuid())
-    name       String  @unique
+    categoryId String    @unique @default(uuid())
+    name       String    @unique
     tutors     Tutor[]
-    bookings  Booking[]
+    bookings   Booking[]
     slug       String
+
+    @@map("categories")
 }

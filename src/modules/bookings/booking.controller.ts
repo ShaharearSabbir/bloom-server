@@ -76,8 +76,25 @@ const updateBookingStatus = async (
   }
 };
 
+const joinSession = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const bookingId = req.params.id;
+    const result = await bookingService.joinSession(bookingId as string);
+    sendRes({
+      res,
+      statusCode: 200,
+      success: true,
+      message: "Session joined successfully",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const bookingController = {
   createBookings,
   userBookings,
   updateBookingStatus,
+  joinSession,
 };

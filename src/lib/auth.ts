@@ -39,7 +39,7 @@ export const auth = betterAuth({
   },
 
   emailVerification: {
-    sendOnSignUp: true,
+    sendOnSignUp: false,
     autoSignInAfterVerification: true,
     sendVerificationEmail: async ({ user, token }) => {
       const verificationUrl = `${process.env.APP_URL}/verify-email?token=${token}`;

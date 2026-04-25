@@ -7,8 +7,6 @@ const validateRequest =
   (req: Request, res: Response, next: NextFunction) => {
     const validated = schema.safeParse(req.body);
 
-    console.log(validated);
-
     if (!validated.success) {
       return sendRes({
         res,

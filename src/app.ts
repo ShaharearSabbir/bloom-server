@@ -7,6 +7,8 @@ import { tutorRoutes } from "./modules/tutor/tutor.routes";
 import { categoryRoutes } from "./modules/category/category.routes";
 import availabilityRoutes from "./modules/availability/availability.routes";
 import { bookingRoute } from "./modules/bookings/booking.route";
+import { reviewsRoute } from "./modules/reviews/reviews.route";
+import { globalErrorHandler } from "./middleware/globalErrorHandler";
 
 const app: Application = express();
 
@@ -32,5 +34,9 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/availabilities", availabilityRoutes);
 
 app.use("/api/bookings", bookingRoute);
+
+app.use("/api/reviews", reviewsRoute);
+
+app.use(globalErrorHandler);
 
 export default app;

@@ -10,4 +10,5 @@ model Availability {
 
     @@index([tutorId])
     @@index([dayOfWeek])
+    @@map("availabilities")
 }

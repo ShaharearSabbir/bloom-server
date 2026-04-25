@@ -74,8 +74,6 @@ const getTutors = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const result = await tutorService.getTutors(validatedQuery.data);
 
-    console.log(result);
-
     return sendRes({
       res,
       statusCode: 200,

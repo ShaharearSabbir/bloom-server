@@ -850,13 +850,13 @@ const additionalTutors = [
 ];
 
 const categoryIds = [
-  "0bde4a46-f227-4558-afdc-2e9b23e2fa09",
-  "1098d452-0221-47fe-9827-54011f0cf8e0",
-  "1f7cb2ec-2a71-4120-8399-61d308fc1c57",
-  "6a34c244-aa45-4689-8fcf-2a87de062e68",
-  "c8eceef2-1ed4-4dc7-aa66-f36c5ea2475e",
-  "d53831a7-2073-4353-9175-14f1546e7907",
-  "fbd57e91-3cfc-4fda-94f7-1866486400db",
+  "bdb3379c-8e70-46f9-96b0-3f5b7aa4f8f3",
+  "83e7c11a-f2c0-4408-a5f7-5e29f970befe",
+  "5788bb8b-6744-4c6c-9474-b51712fe176b",
+  "db30c09d-a183-49a9-a338-9efe8c6c30c7",
+  "d06b7275-c968-414e-838f-15c7fcff38ab",
+  "ff24be1a-32c7-49a3-ab36-0ec76025620a",
+  "d1a03ed4-46ae-4976-94f6-3811b926c6a8",
 ];
 async function seedSingleTutor(tutor: (typeof tutorsData)[0]) {
   try {
