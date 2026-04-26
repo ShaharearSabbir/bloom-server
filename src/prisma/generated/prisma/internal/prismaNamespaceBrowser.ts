@@ -137,6 +137,7 @@ export const TutorScalarFieldEnum = {
   bio: 'bio',
   hourlyRate: 'hourlyRate',
   profession: 'profession',
+  isFeatured: 'isFeatured',
   avgRating: 'avgRating',
   reviewCount: 'reviewCount',
   createdAt: 'createdAt',

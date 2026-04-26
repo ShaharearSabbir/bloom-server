@@ -24,6 +24,27 @@ const createReview = async (
   }
 };
 
+const myTutorReview = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const tutorId = req.user?.id as string;
+    const result = await reviewsService.MyTutorReview(tutorId);
+    return sendRes({
+      res,
+      statusCode: 200,
+      success: true,
+      message: "My Tutor Review fetched successfully",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const reviewsController = {
   createReview,
+  myTutorReview,
 };

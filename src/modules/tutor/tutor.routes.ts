@@ -25,11 +25,12 @@ router.get(
   auth(UserRole.TUTOR, UserRole.ADMIN),
   tutorController.getMyTutor,
 );
+router.get("/featured-tutors", tutorController.getFeaturedTutors);
 
 router.get("/", tutorController.getTutors);
 
-router.get("/:id", tutorController.getTutorById);
-
 router.get("/filter", tutorController.filterData);
+
+router.get("/:id", tutorController.getTutorById);
 
 export const tutorRoutes = router;

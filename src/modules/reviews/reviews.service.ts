@@ -49,6 +49,42 @@ const createReview = async (payload: Payload) => {
   return review;
 };
 
+const MyTutorReview = async (tutorId: string) => {
+  const result = await prisma.$transaction(async (tx) => {
+    const reviews = await tx.review.findMany({
+      where: { tutorId },
+      include: { student: { select: { name: true, id: true, image: true } } },
+      orderBy: { createdAt: "desc" },
+      take: 10,
+    });
+    const tutor = await tx.tutor.findUnique({
+      where: { userId: tutorId },
+      select: { avgRating: true, reviewCount: true },
+    });
+
+    const happyCustomer = await tx.booking.findMany({
+      where: {
+        tutorId,
+        status: BookingStatus.COMPLETED,
+      },
+      select: { studentId: true },
+    });
+
+    const happyCustomerCount = happyCustomer.length;
+
+    const stats = {
+      avgRating: tutor?.avgRating || 0,
+      reviewCount: tutor?.reviewCount || 0,
+      happyStudents: happyCustomerCount,
+    };
+
+    return { reviews, stats };
+  });
+
+  return result;
+};
+
 export const reviewsService = {
   createReview,
+  MyTutorReview,
 };

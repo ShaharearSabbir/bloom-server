@@ -6,12 +6,12 @@ model Tutor {
     bio          String
     hourlyRate   Float
     profession   String
+    isFeatured   Boolean        @default(false)
     avgRating    Float          @default(0)
     reviewCount  Int            @default(0)
     availability Availability[]
     reviews      Review[]
     bookings     Booking[]
-
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -20,6 +20,5 @@ model Tutor {
     @@index([hourlyRate], name: "idx_Tutor_hourlyRate")
     @@index([reviewCount], name: "idx_Tutor_reviewCount")
     @@index([createdAt], name: "idx_Tutor_createdAt")
-
     @@map("tutors")
 }

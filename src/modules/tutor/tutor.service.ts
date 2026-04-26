@@ -17,7 +17,7 @@ const updateTutor = async (userId: string, payload: TutorCreateInput) => {
 };
 
 const getTutor = async (userId: string) => {
-  const tutorData = await prisma.tutor.findUniqueOrThrow({
+  const tutorData = await prisma.tutor.findUnique({
     where: { userId },
     select: {
       userId: true,
@@ -58,6 +58,8 @@ const getTutor = async (userId: string) => {
     },
   });
 
+  if (!tutorData) throw new Error("Tutor not found");
+
   const tutor = {
     id: tutorData.userId,
     name: tutorData.user.name,
@@ -87,14 +89,22 @@ const getTutors = async (query: TutorQueryParams) => {
   }
 
   if (query.search) {
+    const searchTerm = query.search.trim();
+
+    const isNumeric = searchTerm !== "" && !isNaN(Number(searchTerm));
+    const numericValue = isNumeric ? Number(searchTerm) : null;
+
     WhereConditions.OR = [
-      { category: { name: { contains: query.search, mode: "insensitive" } } },
-      { profession: { contains: query.search, mode: "insensitive" } },
-      {
-        user: {
-          name: { contains: query.search, mode: "insensitive" },
-        },
-      },
+      { category: { name: { contains: searchTerm, mode: "insensitive" } } },
+      { profession: { contains: searchTerm, mode: "insensitive" } },
+      { user: { name: { contains: searchTerm, mode: "insensitive" } } },
+
+      ...(numericValue !== null
+        ? [
+            { hourlyRate: { gte: numericValue } },
+            { avgRating: { gte: numericValue } },
+          ]
+        : []),
     ];
   }
 
@@ -199,10 +209,67 @@ const getTutors = async (query: TutorQueryParams) => {
   };
 };
 
+const getFeaturedTutors = async () => {
+  const tutorData = await prisma.tutor.findMany({
+    where: {
+      isFeatured: true,
+    },
+    take: 6,
+    select: {
+      userId: true,
+      bio: true,
+      hourlyRate: true,
+      avgRating: true,
+      bookings: {
+        where: {
+          bookingDate: {
+            gte: new Date(),
+          },
+        },
+        select: {
+          bookingDate: true,
+          endTime: true,
+          startTime: true,
+        },
+      },
+      reviewCount: true,
+      availability: {
+        select: { dayOfWeek: true, startTime: true, endTime: true },
+      },
+      user: {
+        select: { name: true, image: true, emailVerified: true },
+      },
+      category: {
+        select: { name: true, categoryId: true },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  const tutors = tutorData.map((t) => ({
+    id: t.userId,
+    name: t.user.name,
+    bio: t.bio,
+    image: t.user.image,
+    category: t.category?.name || "Uncategorized",
+    categoryId: t.category.categoryId,
+    hourlyRate: t.hourlyRate,
+    rating: Number(t.avgRating.toFixed(1)),
+    totalReviews: t.reviewCount,
+    isVerified: !!t.user.emailVerified,
+    availability: t.availability,
+    upcomingBookings: t.bookings,
+  }));
+
+  return tutors;
+};
+
 const filterData = async () => {
   const result = await prisma.$transaction(async (tx) => {
     const categories = await tx.category.findMany();
-    const tutors = await tx.tutor.aggregate({
+    const tutorData = await tx.tutor.aggregate({
       _max: {
         hourlyRate: true,
       },
@@ -214,8 +281,8 @@ const filterData = async () => {
     return {
       categories,
       priceRange: {
-        min: tutors._min.hourlyRate,
-        max: tutors._max.hourlyRate,
+        min: tutorData._min.hourlyRate,
+        max: tutorData._max.hourlyRate,
       },
     };
   });
@@ -229,6 +296,7 @@ const tutorService = {
   updateTutor,
   getTutors,
   filterData,
+  getFeaturedTutors,
 };
 
 export default tutorService;
