@@ -6,8 +6,10 @@ const createCategory = async (payload: CategoryCreateInput) => {
   return category;
 };
 
-const getCategories = async () => {
-  const category = await prisma.category.findMany();
+const getCategories = async (limit: number) => {
+  const category = await prisma.category.findMany({
+    ...(limit && { take: limit }),
+  });
   return category;
 };
 

@@ -30,7 +30,10 @@ const getCategories = async (
   next: NextFunction,
 ) => {
   try {
-    const result = await categoryService.getCategories();
+
+    const limit = parseInt(req.query.limit as string)
+
+    const result = await categoryService.getCategories(limit);
     return sendRes({
       res,
       statusCode: 200,
