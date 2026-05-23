@@ -10,6 +10,7 @@ import { bookingRoute } from "./modules/bookings/booking.route";
 import { reviewsRoute } from "./modules/reviews/reviews.route";
 import { globalErrorHandler } from "./middleware/globalErrorHandler";
 import studentRoute from "./modules/student/student.route";
+import AdminRoute from "./modules/admin/admin.route";
 
 const app: Application = express();
 
@@ -29,16 +30,12 @@ app.get("/", (req, res) => {
 app.all("/api/auth/*splat", toNodeHandler(auth));
 
 app.use("/api/tutors", tutorRoutes);
-
 app.use("/api/categories", categoryRoutes);
-
 app.use("/api/availabilities", availabilityRoutes);
-
 app.use("/api/bookings", bookingRoute);
-
 app.use("/api/reviews", reviewsRoute);
-
 app.use("/api/students", studentRoute);
+app.use("/api/admin", AdminRoute);
 
 app.use(globalErrorHandler);
 

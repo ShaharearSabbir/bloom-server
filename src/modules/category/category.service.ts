@@ -9,6 +9,9 @@ const createCategory = async (payload: CategoryCreateInput) => {
 const getCategories = async (limit: number) => {
   const category = await prisma.category.findMany({
     ...(limit && { take: limit }),
+    orderBy: {
+      tutors: { _count: "desc" },
+    },
   });
   return category;
 };
