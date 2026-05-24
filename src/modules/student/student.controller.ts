@@ -42,5 +42,26 @@ const updateProfile = async (
   }
 };
 
-const studentController = { getProfile, updateProfile };
+const studentStats = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const userId = req.user?.id;
+
+    const result = await studentService.studentStats(userId as string);
+    return sendRes({
+      res,
+      statusCode: 200,
+      success: true,
+      message: "Student stats fetched successfully",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const studentController = { getProfile, updateProfile, studentStats };
 export default studentController;

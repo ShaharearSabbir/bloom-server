@@ -153,6 +153,22 @@ const filterData = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const tutorStats = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const tutorId = req.user?.id as string;
+    const stats = await tutorService.tutorStats(tutorId);
+    return sendRes({
+      res,
+      statusCode: 200,
+      success: true,
+      message: "Tutor stats fetched successfully",
+      data: stats,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const tutorController = {
   createTutor,
   getMyTutor,
@@ -161,6 +177,7 @@ const tutorController = {
   filterData,
   getTutorById,
   getFeaturedTutors,
+  tutorStats,
 };
 
 export default tutorController;

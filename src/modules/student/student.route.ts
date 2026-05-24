@@ -16,5 +16,7 @@ route.put(
   studentController.updateProfile,
 );
 
+route.get("/stats", auth(UserRole.STUDENT), studentController.studentStats);
+
 const studentRoute = route;
 export default studentRoute;

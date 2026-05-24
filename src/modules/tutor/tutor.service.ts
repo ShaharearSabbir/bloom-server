@@ -1,5 +1,5 @@
 import prisma from "../../lib/prisma";
-import { Prisma } from "../../prisma/generated/prisma/client";
+import { BookingStatus, Prisma } from "../../prisma/generated/prisma/client";
 import { TutorCreateInput } from "../../prisma/generated/prisma/models";
 import { TutorQueryParams } from "./tutor.validation";
 
@@ -290,6 +290,91 @@ const filterData = async () => {
   return result;
 };
 
+const tutorStats = async (tutorId: string) => {
+  const isExist = await prisma.tutor.findUnique({
+    where: { userId: tutorId },
+    select: { userId: true },
+  });
+
+  if (!isExist) throw new Error("Tutor not found");
+
+  const now = new Date();
+
+  const startOfNextWeek = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate() + 7,
+  );
+  startOfNextWeek.setHours(0, 0, 0, 0);
+
+  const endOfNextWeek = new Date(
+    startOfNextWeek.getFullYear(),
+    startOfNextWeek.getMonth(),
+    startOfNextWeek.getDate() + 7,
+  );
+  endOfNextWeek.setHours(23, 59, 59, 999);
+
+  const stats = await prisma.$transaction(async (tx) => {
+    const bookingStats = await tx.booking.aggregate({
+      where: { tutorId },
+      _count: { studentId: true, id: true },
+      _sum: { totalFees: true },
+    });
+
+    const upcomingBookingData = await tx.booking.findMany({
+      where: {
+        tutorId,
+        status: BookingStatus.CONFIRM,
+        bookingDate: {
+          gte: startOfNextWeek,
+          lte: endOfNextWeek,
+        },
+      },
+      orderBy: {
+        bookingDate: "asc",
+      },
+      select: {
+        id: true,
+        bookingDate: true,
+        startTime: true,
+        category: {
+          select: {
+            name: true,
+          },
+        },
+        student: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    const upcomingBooking = upcomingBookingData.map((booking) => ({
+      id: booking.id,
+      bookingDate: booking.bookingDate,
+      startTime: booking.startTime,
+      categoryName: booking.category?.name || "Uncategorized",
+      studentName: booking.student?.name || "Unknown Student",
+    }));
+
+    const avgRating = await tx.review.aggregate({
+      where: { tutorId },
+      _avg: { rating: true },
+    });
+
+    return {
+      totalStudent: bookingStats._count.studentId,
+      totalEarnings: bookingStats._sum.totalFees,
+      totalSessions: bookingStats._count.id,
+      avgRating: Number(avgRating._avg.rating?.toFixed(1)) || 0,
+      upcomingBooking,
+    };
+  });
+
+  return stats;
+};
+
 const tutorService = {
   createTutor,
   getTutor,
@@ -297,6 +382,7 @@ const tutorService = {
   getTutors,
   filterData,
   getFeaturedTutors,
+  tutorStats,
 };
 
 export default tutorService;

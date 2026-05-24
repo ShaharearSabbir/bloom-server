@@ -31,6 +31,8 @@ router.get("/", tutorController.getTutors);
 
 router.get("/filter", tutorController.filterData);
 
+router.get("/stats", auth(UserRole.TUTOR), tutorController.tutorStats);
+
 router.get("/:id", tutorController.getTutorById);
 
 export const tutorRoutes = router;

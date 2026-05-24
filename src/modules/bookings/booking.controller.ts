@@ -60,9 +60,12 @@ const updateBookingStatus = async (
   try {
     const bookingId = req.params.id;
     const { status } = req.body;
+    const role = req.user?.role;
+
     const result = await bookingService.updateBookingStatus(
       bookingId as string,
       status as BookingStatus,
+      role as UserRole,
     );
     sendRes({
       res,

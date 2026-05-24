@@ -1,5 +1,9 @@
 import prisma from "../../lib/prisma";
-import { Prisma, UserStatus } from "../../prisma/generated/prisma/client";
+import {
+  Prisma,
+  UserRole,
+  UserStatus,
+} from "../../prisma/generated/prisma/client";
 import { SearchAndPagination } from "./admin.validation";
 
 const getAllUsers = async (query: SearchAndPagination) => {
@@ -160,6 +164,31 @@ const getAllBookings = async (query: SearchAndPagination) => {
   return { bookings, meta };
 };
 
-const adminService = { getAllUsers, updateUserStatus, getAllBookings };
+const adminStats = async () => {
+  const stats = await prisma.$transaction(async (tx) => {
+    const totalStudents = await tx.user.count({
+      where: { role: UserRole.STUDENT },
+    });
+    const totalTutors = await tx.user.count({
+      where: { role: UserRole.TUTOR },
+    });
+    const totalBookings = await tx.booking.count();
+
+    return {
+      totalStudents,
+      totalTutors,
+      totalBookings,
+    };
+  });
+
+  return stats;
+};
+
+const adminService = {
+  getAllUsers,
+  updateUserStatus,
+  getAllBookings,
+  adminStats,
+};
 
 export default adminService;

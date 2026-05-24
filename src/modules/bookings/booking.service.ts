@@ -61,7 +61,26 @@ const userBookings = async (
 const updateBookingStatus = async (
   bookingId: string,
   status: BookingStatus,
+  role: UserRole,
 ) => {
+  const isExist = await prisma.booking.findUnique({ where: { id: bookingId } });
+
+  if (!isExist) {
+    throw new Error("Booking not found");
+  }
+
+  if (isExist.status === BookingStatus.COMPLETED) {
+    throw new Error("Cannot update status of a completed booking");
+  }
+
+  if (role == UserRole.STUDENT && status !== BookingStatus.CANCELED) {
+    throw new Error("Students can only cancel their bookings");
+  }
+
+  if (role == UserRole.TUTOR && status !== BookingStatus.CONFIRM) {
+    throw new Error("Tutors can only confirm their bookings");
+  }
+
   const updatedBooking = await prisma.booking.update({
     where: { id: bookingId },
     data: { status: status },

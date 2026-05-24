@@ -10,6 +10,8 @@ route.get("/users", auth(UserRole.ADMIN), adminController.getAllUsers);
 
 route.get("/bookings", auth(UserRole.ADMIN), adminController.getAllBookings);
 
+route.get("/stats", auth(UserRole.ADMIN), adminController.adminStats);
+
 route.put(
   "/users/:id/status",
   auth(UserRole.ADMIN),

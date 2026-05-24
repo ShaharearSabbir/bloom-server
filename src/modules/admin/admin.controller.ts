@@ -33,6 +33,7 @@ const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
     next(error);
   }
 };
+
 const getAllBookings = async (
   req: Request,
   res: Response,
@@ -101,6 +102,26 @@ const updateUserStatus = async (
   }
 };
 
-const adminController = { getAllUsers, getAllBookings, updateUserStatus };
+const adminStats = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const stats = await adminService.adminStats();
+    return sendRes({
+      res,
+      statusCode: 200,
+      success: true,
+      message: "Admin stats fetched successfully",
+      data: stats,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const adminController = {
+  getAllUsers,
+  getAllBookings,
+  updateUserStatus,
+  adminStats,
+};
 
 export default adminController;
