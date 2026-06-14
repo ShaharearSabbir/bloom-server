@@ -1,5 +1,4 @@
 import express, { Application } from "express";
-import { env } from "./config";
 import { toNodeHandler } from "better-auth/node";
 import { auth } from "./lib/auth";
 import cors from "cors";
@@ -11,6 +10,7 @@ import { reviewsRoute } from "./modules/reviews/reviews.route";
 import { globalErrorHandler } from "./middleware/globalErrorHandler";
 import studentRoute from "./modules/student/student.route";
 import AdminRoute from "./modules/admin/admin.route";
+import { env } from "./config/dotenv";
 
 const app: Application = express();
 
@@ -18,7 +18,12 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: [env.FRONTEND_URL, env.BETTER_AUTH_URL],
+    origin: [
+      env.FRONTEND_URL,
+      env.BETTER_AUTH_URL,
+      "http://localhost:3000",
+      "http://localhost:5000",
+    ],
     credentials: true,
   }),
 );

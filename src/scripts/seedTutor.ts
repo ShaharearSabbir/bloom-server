@@ -885,7 +885,7 @@ async function seedSingleTutor(tutor: (typeof tutorsData)[0]) {
     const tutorProfile = await prisma.tutor.create({
       data: {
         userId: user.id,
-        categoryId: randomCategory,
+        categoryId: randomCategory as string,
         bio: tutor.bio,
         profession: tutor.profession,
         hourlyRate: Math.floor(Math.random() * (50 - 10 + 1)) + 10,

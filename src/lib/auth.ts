@@ -1,17 +1,18 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import prisma from "./prisma";
-import { env } from "../config";
 import { generateVerificationEmail } from "../utils/generateVerificationEmail";
 import sendEmail from "../utils/sendEmail";
 import { getOAuthState } from "better-auth/api";
+import { env } from "../config/dotenv";
+import { oAuthProxy } from "better-auth/plugins";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
   secret: env.BETTER_AUTH_SECRET,
-  baseURL: env.BETTER_AUTH_URL,
+  baseURL: env.FRONTEND_URL,
   trustedOrigins: [env.FRONTEND_URL, env.BETTER_AUTH_URL],
 
   user: {
@@ -51,11 +52,35 @@ export const auth = betterAuth({
       try {
         await sendEmail(user.email, "Verify your email address", html, text);
       } catch (error) {
-        console.error("Failed to send verification email:", error);
         throw error;
       }
     },
   },
+
+  advanced: {
+    cookies: {
+      session_token: {
+        name: "session_token", // Force this exact name
+        attributes: {
+          httpOnly: true,
+          secure: true,
+          sameSite: "none",
+          partitioned: true,
+        },
+      },
+      state: {
+        name: "session_token", // Force this exact name
+        attributes: {
+          httpOnly: true,
+          secure: true,
+          sameSite: "none",
+          partitioned: true,
+        },
+      },
+    },
+  },
+
+  plugins: [oAuthProxy()],
 
   databaseHooks: {
     user: {

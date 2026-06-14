@@ -1,8 +1,17 @@
-import app from "./app.js";
-import { env } from "./config";
+import app from "./app";
+import { env } from "./config/dotenv";
 
-const port = env.PORT;
+const PORT = env.PORT || 5000;
 
-app.listen(port, () => {
-  console.log(`${env.APP_NAME} server is running on http://localhost:${port}`);
-});
+async function bootstrap() {
+  try {
+    const server = app.listen(PORT, () => {
+      console.log(`Bloom server is running on http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.error("Failed to start server:", error);
+    process.exit(1);
+  }
+}
+
+bootstrap();

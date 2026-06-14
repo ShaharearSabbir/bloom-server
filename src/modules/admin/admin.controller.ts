@@ -76,8 +76,6 @@ const updateUserStatus = async (
   try {
     const status = req.body as { status: UserStatus };
 
-    console.log(status);
-
     if (!status || !Object.values(UserStatus).includes(status.status)) {
       return sendRes({
         res,
